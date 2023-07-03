@@ -9,10 +9,10 @@ abstract class RemoteQuoteDataSource {
   Future<QuoteModel> getRandomQuote();
 }
 
-class RandomQuoteRemoteDataSource implements RemoteQuoteDataSource {
+class RandomQuoteRemoteDataSourceImpl implements RemoteQuoteDataSource {
   final String endPoint = 'https://api.api-ninjas.com/v1/quotes?';
   final http.Client client;
-  RandomQuoteRemoteDataSource({
+  RandomQuoteRemoteDataSourceImpl({
     required this.client,
   });
   @override
@@ -24,7 +24,7 @@ class RandomQuoteRemoteDataSource implements RemoteQuoteDataSource {
     });
 
     if (response.statusCode == 200) {
-      return QuoteModel.fromJson(json.decode(response.body));
+      return QuoteModel.fromJson(json.decode(response.body)[0]);
     } else {
       throw ServerException();
     }

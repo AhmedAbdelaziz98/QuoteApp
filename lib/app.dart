@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quote/features/random_quote/presentation/cubit/random_quote_cubit.dart';
 import 'package:quote/features/random_quote/presentation/screens/quote_screen.dart';
 
 import 'config/routers/app_routes.dart';
@@ -19,6 +17,7 @@ class QuoteApp extends StatelessWidget {
       ),
       home: const QuoteScreen(),
       onGenerateRoute: AppRoutes.onGenerateRoute,
+      initialRoute: Routes.initialRoute,
     );
   }
 }
