@@ -9,8 +9,7 @@ class Refresh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.read<RandomQuoteCubit>()
-          .getRandomQuotes(),
+      onTap: () => context.read<RandomQuoteCubit>().getRandomQuotes(),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.all(10),
@@ -20,6 +19,7 @@ class Refresh extends StatelessWidget {
         ),
         child: const Icon(
           Icons.refresh,
+          color: Colors.white,
           size: 28,
         ),
       ),

@@ -15,13 +15,17 @@ class QuoteScreen extends StatelessWidget {
       create: (context) => di.sl<RandomQuoteCubit>()..getRandomQuotes(),
       child: Scaffold(
         appBar: AppBar(),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(child: Text('Quote App')),
-              QuoteContent(),
-              Refresh(),
-            ],
+        body: const SizedBox(width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Center(child: Text('Quote App')),
+                QuoteContent(),
+                Refresh(),
+              ],
+            ),
           ),
         ),
       ),

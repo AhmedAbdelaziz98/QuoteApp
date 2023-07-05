@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:quote/core/api/api_consumer.dart';
+import 'package:quote/core/api/app_interceptor.dart';
+import 'package:quote/core/api/dio_consumer.dart';
 import 'package:quote/core/network/network_info.dart';
 import 'package:quote/features/random_quote/data/datasources/random_quote_local_datasource.dart';
 import 'package:quote/features/random_quote/data/datasources/random_quote_remote_datasoruce.dart';
 import 'package:quote/features/random_quote/presentation/cubit/random_quote_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart ' as http;
 import 'features/random_quote/data/repositories/quote_repo_impl.dart';
 import 'features/random_quote/domain/repositories/quote_repo.dart';
 import 'features/random_quote/domain/usecases/get_random_quote.dart';
@@ -33,18 +36,28 @@ Future<void> init() async {
   sl.registerLazySingleton<RandomQuoteLocalDataSource>(
       () => RandomQuoteLocalDataSourceImpl(sharedPreferences: sl()));
   sl.registerLazySingleton<RemoteQuoteDataSource>(
-      () => RandomQuoteRemoteDataSourceImpl(client: sl()));
+      () => RandomQuoteRemoteDataSourceImpl(apiConsumer: sl()));
 
   //! Core
 
   sl.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(internetConnectionChecker: sl()));
 
+  sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
+
   //! External
 
   final sharedPreferences = await SharedPreferences.getInstance();
 
   sl.registerLazySingleton(() => sharedPreferences);
-  sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => Dio());
   sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton(() => AppInterceptors());
+  sl.registerLazySingleton(() => LogInterceptor(
+      error: true,
+      request: true,
+      requestBody: true,
+      requestHeader: true,
+      responseBody: true,
+      responseHeader: true));
 }

@@ -3,7 +3,9 @@ import 'package:quote/core/utils/app_colors.dart';
 import 'package:quote/core/utils/mediaquery_values.dart';
 
 class ErrorWidget extends StatelessWidget {
-  const ErrorWidget({super.key});
+  const ErrorWidget({super.key, this.onPress, this.message});
+  final Function()? onPress;
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +20,9 @@ class ErrorWidget extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 12),
-          child: const Text(
-            "Something Went Wrong",
-            style: TextStyle(
+          child: Text(
+            message ?? "Something Went Wrong",
+            style: const TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
@@ -33,7 +35,7 @@ class ErrorWidget extends StatelessWidget {
           height: context.height * 0.05,
         ),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: onPress,
             style: ElevatedButton.styleFrom(
 
                 // alignment: Alignment.center,

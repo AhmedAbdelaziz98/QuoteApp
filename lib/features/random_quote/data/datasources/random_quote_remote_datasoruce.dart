@@ -1,7 +1,6 @@
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-import 'package:quote/core/error/exceptions.dart';
+import 'package:quote/core/api/api_consumer.dart';
+import 'package:quote/core/api/end_points.dart';
 
 import 'package:quote/features/random_quote/data/models/quote_model.dart';
 
@@ -10,23 +9,17 @@ abstract class RemoteQuoteDataSource {
 }
 
 class RandomQuoteRemoteDataSourceImpl implements RemoteQuoteDataSource {
-  final String endPoint = 'https://api.api-ninjas.com/v1/quotes?';
-  final http.Client client;
+  final ApiConsumer apiConsumer;
   RandomQuoteRemoteDataSourceImpl({
-    required this.client,
+    required this.apiConsumer,
   });
   @override
   Future<QuoteModel> getRandomQuote() async {
-    final remoteQuoteUrl = Uri.parse(endPoint);
-    final response = await client.get(remoteQuoteUrl, headers: {
-      'Content-Type': 'application/json',
-      'X-Api-Key': 'MOazYgpQHn5En2Nxf+/aEA==SWQa0nuTmbVLn8oV',
-    });
-
-    if (response.statusCode == 200) {
-      return QuoteModel.fromJson(json.decode(response.body)[0]);
-    } else {
-      throw ServerException();
-    }
+    final response = await apiConsumer.get(
+      EndPoints.randomQuote,
+      queryParameters: Headers.quoteHeaders,
+    );
+    print(response);
+    return QuoteModel.fromJson(response[0]);
   }
 }
